@@ -1,10 +1,41 @@
 import random
 
 Ads database
-ads = [
-    {"text": "Ad 1", "image": "ad1.jpg", "link": "(link unavailable)"},
-    {"text": "Ad 2", "image": "ad2.jpg", "link": "(link unavailable)"},
-    # ...
+const mongoose = require('mongoose');
+
+const adSchema = new mongoose.Schema({
+  text: String,
+  image: String,
+  link: String,
+  category: String,
+  targetAudience: String
+});
+
+const Ad = mongoose.model('Ad', adSchema);
+
+const ad = new Ad({
+  text: 'Ad 1',
+  image: 'ad1.jpg',
+  link: '(link unavailable)',
+  category: 'Category 1',
+  targetAudience: 'Target Audience 1'
+});
+
+ad.save((err) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log('Ad saved successfully');
+  }
+});
+
+Ad.find({}, (err, ads) => {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log(ads);
+  }
+});
 ]
 
 Ads ka schedule banayein
