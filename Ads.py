@@ -38,7 +38,25 @@ Ad.find({}, (err, ads) => {
 });
 ]
 
-Ads ka schedule banayein
+import schedule
+import time
+
+def send_ad(update, context):
+    ad = get_ad()
+    context.bot.send_message(
+        chat_id=(link unavailable),
+        text=ad["text"],
+        reply_markup={"inline_keyboard": [[{"text": "Click here", "url": ad["link"]}]]}
+    )
+    
+    pass
+
+Ads har 10 minute mein bhejein
+schedule.every(10).(link unavailable)(send_ad)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
 def get_ad():
     return random.choice(ads)
 
