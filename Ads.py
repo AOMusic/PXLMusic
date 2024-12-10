@@ -75,7 +75,37 @@ def send_ad(update, context):
         ads_sent += 1
     else:
         context.bot.send_message(chat_id=(link unavailable), text="Ads limit reached!")
-Ads ka tracking system banayein
+import logging
+
+Ads ka tracking logger banayein
+ads_logger = logging.getLogger('ads_tracker')
+ads_logger.setLevel(logging.INFO)
+
+Ads ka tracking handler banayein
+ads_handler = logging.FileHandler('ads_tracker.log')
+ads_handler.setLevel(logging.INFO)
+
+Ads ka tracking formatter banayein
+ads_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ads_handler.setFormatter(ads_formatter)
+
+Ads ka tracking logger mein handler add karein
+ads_logger.addHandler(ads_handler)
+
 def track_ad(ad):
-    # Ad ka tracking code yahaan likhein
+    ads_logger.info(f'Ad clicked: {ad["text"]} - {ad["link"]}')
+
+def send_ad(update, context):
+    ad = get_ad()
+    context.bot.send_message(
+        chat_id=(link unavailable),
+        text=ad["text"],
+        reply_markup={"inline_keyboard": [[{"text": "Click here", "url": ad["link"], "callback_data": "ad_clicked"}]]}
+    )
+
+def ad_clicked(update, context):
+    query = update.callback_query
+    query.answer()
+    ad = get_ad()
+    track_ad(ad)
     pass
