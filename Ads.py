@@ -60,11 +60,21 @@ while True:
 def get_ad():
     return random.choice(ads)
 
-Ads ka limit set karein
-def send_ad(update, context):
-    ad = get_ad()
-    context.bot.send_message(chat_id=(link unavailable), text=ad["text"], photo=ad["image"], reply_markup={"inline_keyboard": [[{"text": "Click here", "url": ad["link"]}]]})
+ADS_LIMIT = 1
 
+ads_sent = 0
+def send_ad(update, context):
+    global ads_sent
+    if ads_sent < ADS_LIMIT:
+        ad = get_ad()
+        context.bot.send_message(
+            chat_id=(link unavailable),
+            text=ad["text"],
+            reply_markup={"inline_keyboard": [[{"text": "Click here", "url": ad["link"]}]]}
+        )
+        ads_sent += 1
+    else:
+        context.bot.send_message(chat_id=(link unavailable), text="Ads limit reached!")
 Ads ka tracking system banayein
 def track_ad(ad):
     # Ad ka tracking code yahaan likhein
