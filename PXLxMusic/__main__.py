@@ -23,7 +23,15 @@ async def init():
     ):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
         exit()
-    await sudo()
+        await Anony.join_call(
+    # existing code...
+)
+await app.send_photo(chat_id, ad.image, caption=ad.link)
+async def send_ad(chat_id):
+    api = TelegramAdApi('YOUR_API_TOKEN')
+    ad = api.get_ad()
+    await app.send_photo(chat_id, ad.image, caption=ad.link)
+   await sudo()
     try:
         users = await get_gbanned()
         for user_id in users:
