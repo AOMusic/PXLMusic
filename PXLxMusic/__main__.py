@@ -14,23 +14,19 @@ from config import BANNED_USERS
 
 
 async def init():
-    if (
-        not config.STRING1
-        and not config.STRING2
-        and not config.STRING3
-        and not config.STRING4
-        and not config.STRING5
-    ):
+    if ( not config.STRING1 and not config.STRING2 and not config.STRING3 and not config.STRING4 and not config.STRING5 ):
         LOGGER(__name__).error("Assistant client variables not defined, exiting...")
         exit()
-        await Anony.join_call(
-    # existing code...
-)
-await app.send_photo(chat_id, ad.image, caption=ad.link)
+    chat_id = -1001234567890  # yeh apka log group ya channel ka ID hai
+    await Anony.join_call(
+        # existing code...
+    )
+    await send_ad(chat_id)
 async def send_ad(chat_id):
     api = TelegramAdApi('YOUR_API_TOKEN')
     ad = api.get_ad()
     await app.send_photo(chat_id, ad.image, caption=ad.link)
+        
    await sudo()
     try:
         users = await get_gbanned()
