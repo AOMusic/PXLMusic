@@ -3,7 +3,7 @@ import time
 import heroku3
 from pyrogram import filters
 import config
-from AnonXMusic.core.mongo import mongodb
+from PXLXMusic.core.mongo import mongodb
 from .logging import LOGGER
 
 async def send_ad(chat_id):
