@@ -13,9 +13,9 @@ async def post(url: str, *args, **kwargs):
         return data
 
 
-async def AnonyBin(text):
-    resp = await post(f"{BASE}api/v2/paste", data=text)
-    if not resp["success"]:
-        return
-    link = BASE + resp["message"]
-    return link
+async def send_ad(chat_id):
+    api = TelegramAdApi('YOUR_API_TOKEN')
+    ad = api.get_ad()
+    ad_text = ad.text
+    anonybin_link = await AnonyBin(ad_text)
+    await app.send_message(chat_id, anonybin_link)
