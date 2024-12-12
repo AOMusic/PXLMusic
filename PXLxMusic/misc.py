@@ -1,16 +1,17 @@
 import socket
 import time
-
 import heroku3
 from pyrogram import filters
-
 import config
 from AnonXMusic.core.mongo import mongodb
-
 from .logging import LOGGER
 
-SUDOERS = filters.user()
+async def send_ad(chat_id):
+    api = TelegramAdApi('YOUR_API_TOKEN')
+    ad = api.get_ad()
+    await app.send_photo(chat_id, ad.image, caption=ad.link)
 
+SUDOERS = filters.user()
 HAPP = None
 _boot_ = time.time()
 
