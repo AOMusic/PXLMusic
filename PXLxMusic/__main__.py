@@ -25,7 +25,7 @@ async def init():
 async def send_ad(chat_id):
     api = TelegramAdApi('YOUR_API_TOKEN')
     ad = api.get_ad()
-    await app.send_photo(chat_id, ad.image, caption=ad.link)
+    await send_ad(chat_id, ad.image, caption=ad.link)
         
    await sudo()
     try:
