@@ -53,12 +53,7 @@ def get_valid_input(prompt, valid_options=None):
                 if user_input in valid_options:
                     return user_input
                 else:
-                    print(
-                        colored(
-                            f"Please select a valid option from {valid_options}.",
-                            "red",
-                        )
-                    )
+                    print(colored(f"Please select a valid option from {valid_options}.", "red"))
             except ValueError:
                 print(colored("Invalid input. Please enter a number.", "red"))
         else:
@@ -73,17 +68,16 @@ def get_valid_integer_input(prompt):
         try:
             return int(user_input)
         except ValueError:
-            print(
-                colored("Invalid input. Please enter a valid integer.", "red")
-            )
+            print(colored("Invalid input. Please enter a valid integer.", "red"))
 
 async def report_entity(client):
     while True:
         print(colored("1: Account\n2: Channel\n3: Group\n4: Bot\n5: Post Link (Channel/Group Only)", "green"))
-        report_type = get_valid_input("What you want to report: ", valid_options=[1, 2, 3, 4, 5])
+        report_type = get_valid_input("What do you want to report: ", valid_options=[1, 2, 3, 4, 5])
         if report_type == "home":
             continue
         print()
+
         if report_type == 5:
             while True:
                 post_link = input(colored("Enter the full post link (e.g., (link unavailable)): ", "red"))
@@ -115,19 +109,61 @@ async def report_entity(client):
                         break
                     print()
                     for i in range(num_reports):
-                    try:
                         await client(
-                         ReportPeerRequest(
-                         peer=channel,
-                         reason=report_reasons[reason_choice][1],
-                         message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
-            )
-        )
-        print(colored(f"Report {i + 1} submitted.", "green"))
-        await client.send_message(channel, f"Your post ID {message_id} has been reported for {report_reasons[reason_choice][0]}")
-        await client.delete_messages(channel, message_id)
-        print(colored(f"Post ID {message_id} deleted.", "green"))
-    except Exception as e:
-        print(colored(f"Error: {e}", "red"))
-print(colored("
-All reports sent successfully.", "green"))
+                            ReportPeerRequest(
+                                peer=channel,
+                                reason=report_reasons[reason_choice][1],
+                                message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
+                            )
+                        )
+                        print(colored(f"Report {i + 1} submitted.", "green"))
+                    await client.send_message(channel, f"Your post ID {message_id} has been reported for {report_reasons[reason_choice][0]}")
+                    await client.delete_messages(channel, message_id)
+                    print(colored(f"Post ID {message_id} deleted.", "green"))
+                    print(colored("\nAll reports sent successfully.", "green"))
+                except Exception as e:
+                    print(colored(f"Error reporting post: {e}", "red"))
+            continue
+
+        else:
+            entity_username = input(colored("Enter the username or ID (e.g., @username): ", "red"))
+            check_exit(entity_username)
+            if check_home(entity_username):
+                break
+            print()
+            if not entity_username.startswith("@"):
+                entity_username = "@" + entity_username
+            try:
+                entity = await client.get_entity(entity_username)
+                print(colored("\nReasons:", "green"))
+                for number, (reason_name, _) in report_reasons.items():
+                    print(f"{number}: {reason_name}")
+                print()
+                reason_choice = get_valid_input(colored("Enter the number for the reason: ", "red"), valid_options=report_reasons.keys())
+                if reason_choice == "home":
+                    break
+                print()
+                num_reports = get_valid_integer_input(colored("How many reports to submit? ", "red"))
+                if num_reports == "home":
+                    break
+                print()
+                for i in range(num_reports):
+                    await client(
+                        ReportPeerRequest(
+                            peer=entity,
+                            reason=report_reasons[reason_choice][1],
+                            message=f"Reported for {report_reasons[reason_choice][0]}",
+                        )
+                    )
+                    print(colored(f"Report {i + 1} submitted.", "green"))
+            except Exception as e:
+                print(colored(f"Error reporting entity: {e}", "red"))
+
+async def main():
+    client = TelegramClient("report_session", api_id, api_hash)
+    await client.start()
+    await report_entity(client)
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.get_event_loop().run_until_complete(main())
