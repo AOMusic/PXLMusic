@@ -114,13 +114,20 @@ async def report_entity(client):
                     if num_reports == "home":
                         break
                     print()
-                    for i in range(num_reports):
-                        await client(
-                            ReportPeerRequest(
-                                peer=channel,
-                                reason=report_reasons[reason_choice][1],
-                                message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
-                            )
-                        )
-                        print(colored(f"Report {i + 1} submitted.", "green"))
-                        await client.send_message(channel, f"Your post ID {message_id
+for i in range(num_reports):
+    try:
+        await client(
+            ReportPeerRequest(
+                peer=channel,
+                reason=report_reasons[reason_choice][1],
+                message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
+            )
+        )
+        print(colored(f"Report {i + 1} submitted.", "green"))
+        await client.send_message(channel, f"Your post ID {message_id} has been reported for {report_reasons[reason_choice][0]}")
+        await client.delete_messages(channel, message_id)
+        print(colored(f"Post ID {message_id} deleted.", "green"))
+    except Exception as e:
+        print(colored(f"Error: {e}", "red"))
+print(colored("
+All reports sent successfully.", "green"))
