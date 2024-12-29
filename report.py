@@ -114,13 +114,13 @@ async def report_entity(client):
                     if num_reports == "home":
                         break
                     print()
-for i in range(num_reports):
-    try:
-        await client(
-            ReportPeerRequest(
-                peer=channel,
-                reason=report_reasons[reason_choice][1],
-                message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
+                    for i in range(num_reports):
+                    try:
+                        await client(
+                         ReportPeerRequest(
+                         peer=channel,
+                         reason=report_reasons[reason_choice][1],
+                         message=f"Reported post ID {message_id} for {report_reasons[reason_choice][0]}",
             )
         )
         print(colored(f"Report {i + 1} submitted.", "green"))
