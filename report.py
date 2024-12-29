@@ -80,16 +80,16 @@ async def report_entity(client):
 
         if report_type == 5:
             while True:
-                post_link = input(colored("Enter the full post link (e.g., (link unavailable)): ", "red"))
+                post_link = input(colored("Enter the full post link (e.g., https://t.me/username/post_id): ", "red"))
                 check_exit(post_link)
                 if check_home(post_link):
                     break
                 print()
-                if not post_link.startswith("(link unavailable)"):
+                if not post_link.startswith("https://t.me/"):
                     print(colored("You can only report a post link. Please provide a valid link.\n", "red"))
                     continue
                 try:
-                    parts = post_link.replace("(link unavailable)", "").split("/")
+                    parts = post_link.replace("https://t.me/", "").split("/")
                     if len(parts) != 2 or not parts[1].isdigit():
                         print(colored("Invalid post link format. Please provide a valid link.\n", "red"))
                         continue
